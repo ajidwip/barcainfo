@@ -118,7 +118,7 @@ export class ChatPage {
     this.admobchat.prepareInterstitial({
       adId: admobid.interstitial,
       isTesting: true,
-      autoShow: false
+      autoShow: true
     })
   }
   ionViewWillLeave() {
@@ -137,8 +137,7 @@ export class ChatPage {
       },
       { headers })
       .subscribe(val => {
-        // this.admob.removeBanner();
-        this.admobchat.showInterstitial();
+
       })
   }
   ionViewDidLoad() {

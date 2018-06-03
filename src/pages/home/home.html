@@ -68,7 +68,7 @@
     </ion-refresher-content>
   </ion-refresher>
   <div class="content-all">
-    <div class="banner">
+    <div *ngIf="tebakskor == 1" class="banner">
       <ion-card>
         <div class="container">
           <img src="assets/imgs/game.jpg" />
@@ -85,6 +85,18 @@
         </div>
       </ion-card>
     </div>
+    <ion-card style="background:#141835;padding-top:25px;padding-bottom:25px;" class="banner">
+      <ion-item style="background: #141835;" no-lines>
+        <div style="color:#ffffff;padding-left:0px;padding-bottom:10px;">
+          TV Online Indonesia
+          <p style="font-size:10px;color:#ffffff;">Nonton tv, anime, live olahraga dimanapun anda berada.</p>
+        </div>
+        <button ion-button outline color="light" (click)="doPlayStore()">PLAYSTORE</button>
+        <div item-end>
+          <img style="width:70px;height:50px;" src="http://101.255.60.202/webapi5/img/tvonline" />
+        </div>
+      </ion-item>
+    </ion-card>
     <div class="content-news">
       <ion-item no-lines style="background:transparent;margin-bottom:-15px;">
         <h5 style="font-weight:bold;font-size:17px;">BERITA</h5>

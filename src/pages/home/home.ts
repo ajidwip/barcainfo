@@ -35,6 +35,7 @@ export class HomePage {
   public clubawayurl = '';
   public clubhome = '';
   public clubaway = '';
+  public tebakskor = '';
   public users = '';
   public id = '';
   public email = '';
@@ -160,6 +161,7 @@ export class HomePage {
                 this.datecurrent = moment().format();
                 this.clubhomeurl = this.ScheduleAllActive[0].club_home_icon_url;
                 this.clubawayurl = this.ScheduleAllActive[0].club_away_icon_url;
+                this.tebakskor = this.ScheduleAllActive[0].tebak_skor;
                 this.api.get('table/z_club', { params: { filter: "name=" + "'" + this.ScheduleAllActive[0].club_home + "'" } })
                   .subscribe(val => {
                     this.clubhome = val['data'][0].alias;
@@ -175,6 +177,7 @@ export class HomePage {
           this.datecurrent = moment().format();
           this.clubhomeurl = this.ScheduleAllActive[0].club_home_icon_url;
           this.clubawayurl = this.ScheduleAllActive[0].club_away_icon_url;
+          this.tebakskor = this.ScheduleAllActive[0].tebak_skor;
           this.api.get('table/z_club', { params: { filter: "name=" + "'" + this.ScheduleAllActive[0].club_home + "'" } })
             .subscribe(val => {
               this.clubhome = val['data'][0].alias;
@@ -337,5 +340,12 @@ export class HomePage {
     else {
       this.app.getRootNav().setRoot('LoginPage');
     }
+  }
+  doPlayStore() {
+    this.api.get('table/z_link_eksternal')
+    .subscribe(val => {
+      let data = val['data'];
+      window.location.href = data[0].url;
+    });
   }
 }
