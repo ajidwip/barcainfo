@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { App, LoadingController, IonicPage, NavController, NavParams, Refresher } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
 import moment from 'moment';
+import { AdMobPro } from '@ionic-native/admob-pro';
 
 @IonicPage()
 @Component({
@@ -20,6 +21,7 @@ export class CalendarPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public app: App,
+    public admob: AdMobPro,
     public loadingCtrl: LoadingController,
     public api: ApiProvider) {
     this.league = 'Semua Pertandingan';
@@ -32,6 +34,21 @@ export class CalendarPage {
   }
   ionViewDidEnter() {
     this.datecurrent = moment().format();
+    var admobid = {
+      banner: 'ca-app-pub-7488223921090533/9446361096',
+      interstitial: 'ca-app-pub-7488223921090533/9226869245'
+    };
+
+    this.admob.createBanner({
+      adSize: 'SMART_BANNER',
+      adId: admobid.banner,
+      isTesting: false,
+      autoShow: true,
+      position: this.admob.AD_POSITION.BOTTOM_CENTER,
+    });
+  }
+  ionViewWillLeave() {
+    this.admob.removeBanner();
   }
   ngAfterViewInit() {
     this.loader.dismiss();

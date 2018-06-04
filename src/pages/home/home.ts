@@ -8,6 +8,8 @@ import { TabsPage } from '../tabs/tabs';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { UUID } from 'angular2-uuid';
 import { Storage } from '@ionic/storage';
+import { AdMobPro } from '@ionic-native/admob-pro';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 declare var Swiper: any;
 
@@ -31,6 +33,7 @@ export class HomePage {
   public ScheduleAllActive = [];
   public streaming = [];
   public user = [];
+  public url = [];
   public clubhomeurl = '';
   public clubawayurl = '';
   public clubhome = '';
@@ -52,8 +55,10 @@ export class HomePage {
     public api: ApiProvider,
     public sanitizer: DomSanitizer,
     public storage: Storage,
+    public screenOrientation: ScreenOrientation,
     public app: App,
     public iab: InAppBrowser,
+    public admobhome: AdMobPro,
     public http: HttpClient) {
     this.http.get('https://api.twitch.tv/kraken/streams?' + this.client_id)
       .toPromise()
@@ -126,7 +131,9 @@ export class HomePage {
     });
   }
   doOpenVideo(video) {
-    const browser = this.iab.create(video.video_url, '_blank', 'location=no');
+    this.navCtrl.push('PlayerPage', {
+      url: video.video_url
+    })
   }
   doGetNewsAllActive() {
     this.api.get('table/z_content_news', { params: { limit: 5, filter: "status='OPEN'", sort: "id" + " DESC " } })
@@ -209,8 +216,28 @@ export class HomePage {
     });
   }
   ionViewDidEnter() {
+    if (this.platform.is('cordova')) {
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+    }
     this.datecurrent = moment().format();
     this.doGetLive();
+    var admobid = {
+      banner: 'ca-app-pub-7488223921090533/9446361096',
+      interstitial: 'ca-app-pub-7488223921090533/9226869245'
+    };
+
+    this.admobhome.createBanner({
+      adSize: 'SMART_BANNER',
+      adId: admobid.banner,
+      isTesting: false,
+      autoShow: false,
+      position: this.admobhome.AD_POSITION.BOTTOM_CENTER,
+    });
+    this.admobhome.prepareInterstitial({
+      adId: admobid.interstitial,
+      isTesting: false,
+      autoShow: false
+    })
   }
   ionViewWillLeave() {
     document.getElementById('container-img').style.height = 'auto'
@@ -313,6 +340,7 @@ export class HomePage {
       });
   }
   doStreaming(streaming) {
+    this.admobhome.showInterstitial();
     const browser = this.iab.create(streaming[0].source, '_blank', 'location=no');
   }
   doTebakSkor(ScheduleAllActive) {
@@ -344,6 +372,7 @@ export class HomePage {
   doPlayStore() {
     this.api.get('table/z_link_eksternal')
     .subscribe(val => {
+      this.url = val['data'];
       let data = val['data'];
       window.location.href = data[0].url;
     });

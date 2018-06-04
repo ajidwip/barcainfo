@@ -189,15 +189,15 @@
             <img src="{{result.icon_stats_2}}" />
           </div>
         </ion-item>
-        <ion-item *ngIf="result.type_stats == 'SUBSTITUTE' && result.homeaway == 'AWAY'" no-lines style="width:55%;float: right;border-right:2px solid;border-color:#dedede;margin:2%;">
-          <ion-note *ngIf="!result.time_stats_other">{{result.time_stats}}`</ion-note>
-          <ion-note *ngIf="result.time_stats_other">{{result.time_stats}}+{{result.time_stats_other}}`</ion-note>
-          <div>
+        <ion-item *ngIf="result.type_stats == 'SUBSTITUTE' && result.homeaway == 'AWAY'" no-lines style="width:55%;float: right;border-left:2px solid;border-color:#dedede;margin:2%;">
+          <div item-start>
             <img src="{{result.icon_stats}}" />
             <img src="{{result.icon_stats_2}}" />
           </div>
-          <div item-end>{{result.players}}</div>
-          <ion-note item-end>{{result.players_2}}</ion-note>
+          <ion-note item-start *ngIf="!result.time_stats_other">{{result.time_stats}}`</ion-note>
+          <ion-note item-start *ngIf="result.time_stats_other">{{result.time_stats}}+{{result.time_stats_other}}`</ion-note>
+          <div style="text-align: right">{{result.players}}</div>
+          <ion-note style="float: right">{{result.players_2}}</ion-note>
         </ion-item>
         <ion-item *ngIf="result.type_stats != 'SUBSTITUTE' && result.homeaway == 'HOME'" no-lines style="width:55%;float: left;border-right:2px solid;border-color:#dedede;margin:2%;">
           <div item-start *ngIf="!result.time_stats_other">{{result.players}} {{result.time_stats}}`</div>
@@ -338,7 +338,7 @@
           </div>
         </div>
         <div *ngIf="lineups[0].formation_cm == '4'" class="home-lcm">
-          <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf == '1'" class="home">{{lineups[0].number_player_6}}
+          <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf != '3'" class="home">{{lineups[0].number_player_6}}
             <p>{{lineups[0].player_6}}</p>
           </div>
           <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf == '3'" class="home">{{lineups[0].number_player_5}}
@@ -351,7 +351,7 @@
           </div>
         </div>
         <div *ngIf="lineups[0].formation_cm == '2' || lineups[0].formation_cm == '4'" class="home-cm-2">
-          <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf == '1'" class="home">{{lineups[0].number_player_7}}
+          <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf != '3'" class="home">{{lineups[0].number_player_7}}
             <p>{{lineups[0].player_7}}</p>
           </div>
           <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf == '3'" class="home">{{lineups[0].number_player_6}}
@@ -367,7 +367,7 @@
           </div>
         </div>
         <div *ngIf="lineups[0].formation_cm == '2' || lineups[0].formation_cm == '4'" class="home-cm-4">
-          <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf == '1'" class="home">{{lineups[0].number_player_8}}
+          <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf != '3'" class="home">{{lineups[0].number_player_8}}
             <p>{{lineups[0].player_8}}</p>
           </div>
           <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf == '3'" class="home">{{lineups[0].number_player_7}}
@@ -383,7 +383,7 @@
           </div>
         </div>
         <div *ngIf="lineups[0].formation_cm == '4'" class="home-rcm">
-          <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf == '1'" class="home">{{lineups[0].number_player_9}}
+          <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf != '3'" class="home">{{lineups[0].number_player_9}}
             <p>{{lineups[0].player_9}}</p>
           </div>
           <div *ngIf="lineups[0].formation_cm == '4' && lineups[0].formation_cf == '3'" class="home">{{lineups[0].number_player_8}}
@@ -595,7 +595,7 @@
           </div>
         </div>
         <div *ngIf="lineups[1].formation_cm == '4'" class="away-lcm">
-          <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf == '1'" class="away">{{lineups[1].number_player_6}}
+          <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf != '3'" class="away">{{lineups[1].number_player_6}}
             <p>{{lineups[1].player_6}}</p>
           </div>
           <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf == '3'" class="away">{{lineups[1].number_player_5}}
@@ -608,7 +608,7 @@
           </div>
         </div>
         <div *ngIf="lineups[1].formation_cm == '2' || lineups[1].formation_cm == '4'" class="away-cm-2">
-          <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf == '1'" class="away">{{lineups[1].number_player_7}}
+          <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf != '3'" class="away">{{lineups[1].number_player_7}}
             <p>{{lineups[1].player_7}}</p>
           </div>
           <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf == '3'" class="away">{{lineups[1].number_player_6}}
@@ -624,7 +624,7 @@
           </div>
         </div>
         <div *ngIf="lineups[1].formation_cm == '2' || lineups[1].formation_cm == '4'" class="away-cm-4">
-          <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf == '1'" class="away">{{lineups[1].number_player_8}}
+          <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf != '3'" class="away">{{lineups[1].number_player_8}}
             <p>{{lineups[1].player_8}}</p>
           </div>
           <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf == '3'" class="away">{{lineups[1].number_player_7}}
@@ -640,7 +640,7 @@
           </div>
         </div>
         <div *ngIf="lineups[1].formation_cm == '4'" class="away-rcm">
-          <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf == '1'" class="away">{{lineups[1].number_player_9}}
+          <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf != '3'" class="away">{{lineups[1].number_player_9}}
             <p>{{lineups[1].player_9}}</p>
           </div>
           <div *ngIf="lineups[1].formation_cm == '4' && lineups[1].formation_cf == '3'" class="away">{{lineups[1].number_player_8}}

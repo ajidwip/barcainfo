@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { UUID } from 'angular2-uuid';
 import moment from 'moment';
 import { Storage } from '@ionic/storage';
+import { AdMobPro } from '@ionic-native/admob-pro';
 
 @IonicPage()
 @Component({
@@ -39,6 +40,7 @@ export class TebakskorPage {
     public storage: Storage,
     public alertCtrl: AlertController,
     public app: App,
+    public admobts: AdMobPro,
     private http: HttpClient) {
     this.ScheduleAllActive = this.navParams.get('ScheduleAllActive')
     this.api.get('table/z_club', { params: { filter: "name=" + "'" + this.ScheduleAllActive[0].club_home + "'" } })
@@ -69,6 +71,22 @@ export class TebakskorPage {
   }
   ionViewDidEnter() {
     this.datecurrent = moment().format();
+    var admobid = {
+      banner: 'ca-app-pub-7488223921090533/9446361096',
+      interstitial: 'ca-app-pub-7488223921090533/9226869245'
+    };
+    this.admobts.createBanner({
+      adSize: 'SMART_BANNER',
+      adId: admobid.banner,
+      isTesting: false,
+      autoShow: true,
+      position: this.admobts.AD_POSITION.BOTTOM_CENTER,
+    });
+    this.admobts.prepareInterstitial({
+      adId: admobid.interstitial,
+      isTesting: false,
+      autoShow: false
+    })
   }
   doGetPlayers() {
     this.api.get('table/z_players', { params: { limit: 100, filter: "position_group='PLAYER'", sort: "number" + " ASC " } }).subscribe(val => {
@@ -127,6 +145,7 @@ export class TebakskorPage {
                 .subscribe(
                   (val) => {
                     this.doGetPrediction();
+                    this.admobts.showInterstitial();
                   });
             });
           }
@@ -139,10 +158,34 @@ export class TebakskorPage {
     return this.api.get('nextno/z_prediction/id')
   }
   doGetWinners() {
-    this.api.get('table/z_prediction', { params: { limit: 2, filter: "id_game=" + "'" + this.ScheduleAllActive[0].id + "'" + " AND " + "prediction_skor_home=" + this.ScheduleAllActive[0].skor_home + " AND " + "prediction_skor_away=" + this.ScheduleAllActive[0].skor_away, sort: "date ASC" } })
-    .subscribe(val => {
-      this.winners = val['data'];
-    });
+    if (this.ScheduleAllActive[0].club_home == 'Barcelona') {
+      if (this.ScheduleAllActive[0].skor_home > 0) {
+        this.api.get('table/z_prediction', { params: { limit: this.ScheduleAllActive[0].total_pemenang, filter: "id_game=" + "'" + this.ScheduleAllActive[0].id + "'" + " AND " + "prediction_skor_home=" + this.ScheduleAllActive[0].skor_home + " AND " + "prediction_skor_away=" + this.ScheduleAllActive[0].skor_away + " AND " + "prediction_first_scorer=" + "'" + this.ScheduleAllActive[0].first_scorer + "'", sort: "date ASC" } })
+          .subscribe(val => {
+            this.winners = val['data'];
+          });
+      }
+      else {
+        this.api.get('table/z_prediction', { params: { limit: this.ScheduleAllActive[0].total_pemenang, filter: "id_game=" + "'" + this.ScheduleAllActive[0].id + "'" + " AND " + "prediction_skor_home=" + this.ScheduleAllActive[0].skor_home + " AND " + "prediction_skor_away=" + this.ScheduleAllActive[0].skor_away, sort: "date ASC" } })
+          .subscribe(val => {
+            this.winners = val['data'];
+          });
+      }
+    }
+    else if (this.ScheduleAllActive[0].club_away == 'Barcelona') {
+      if (this.ScheduleAllActive[0].skor_away > 0) {
+        this.api.get('table/z_prediction', { params: { limit: this.ScheduleAllActive[0].total_pemenang, filter: "id_game=" + "'" + this.ScheduleAllActive[0].id + "'" + " AND " + "prediction_skor_home=" + this.ScheduleAllActive[0].skor_home + " AND " + "prediction_skor_away=" + this.ScheduleAllActive[0].skor_away + " AND " + "prediction_first_scorer=" + "'" + this.ScheduleAllActive[0].first_scorer + "'", sort: "date ASC" } })
+          .subscribe(val => {
+            this.winners = val['data'];
+          });
+      }
+      else {
+        this.api.get('table/z_prediction', { params: { limit: this.ScheduleAllActive[0].total_pemenang, filter: "id_game=" + "'" + this.ScheduleAllActive[0].id + "'" + " AND " + "prediction_skor_home=" + this.ScheduleAllActive[0].skor_home + " AND " + "prediction_skor_away=" + this.ScheduleAllActive[0].skor_away, sort: "date ASC" } })
+          .subscribe(val => {
+            this.winners = val['data'];
+          });
+      }
+    }
   }
   doProfile(winner) {
     this.app.getRootNav().push('ProfilePage', {

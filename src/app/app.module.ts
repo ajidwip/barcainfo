@@ -21,6 +21,7 @@ import { SafePipe } from '../pipes/safe/safe';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FCM } from '@ionic-native/fcm';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 
 var config = {
@@ -66,7 +67,8 @@ var config = {
     InAppBrowser,
     FileTransfer,
     Camera,
-    FCM
+    FCM,
+    ScreenOrientation
   ]
 })
 export class AppModule {}

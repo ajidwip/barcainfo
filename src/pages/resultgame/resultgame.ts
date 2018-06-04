@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { UUID } from 'angular2-uuid';
 import moment from 'moment';
 import { Storage } from '@ionic/storage';
+import { AdMobPro } from '@ionic-native/admob-pro';
 
 @IonicPage()
 @Component({
@@ -29,6 +30,7 @@ export class ResultgamePage {
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     public api: ApiProvider,
+    public admob: AdMobPro,
     public storage: Storage,
     public app: App,
     private http: HttpClient) {
@@ -51,6 +53,21 @@ export class ResultgamePage {
   }
   ionViewDidEnter() {
     this.datecurrent = moment().format();
+    var admobid = {
+      banner: 'ca-app-pub-7488223921090533/9446361096',
+      interstitial: 'ca-app-pub-7488223921090533/9226869245'
+    };
+
+    this.admob.createBanner({
+      adSize: 'SMART_BANNER',
+      adId: admobid.banner,
+      isTesting: false,
+      autoShow: true,
+      position: this.admob.AD_POSITION.BOTTOM_CENTER,
+    });
+  }
+  ionViewWillLeave() {
+    this.admob.removeBanner();
   }
   doGetResultsHome() {
     this.api.get('table/z_game_results', { params: { limit: 100, filter: "id_game=" + "'" + this.idgame + "'" + " AND type_stats='GOAL' AND homeaway='HOME'", sort: "time_stats" + " ASC " } }).subscribe(val => {
@@ -77,5 +94,4 @@ export class ResultgamePage {
       this.results = val['data'];
     });
   }
-
 }

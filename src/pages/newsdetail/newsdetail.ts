@@ -41,7 +41,7 @@ export class NewsdetailPage {
     this.admob.createBanner({
       adSize: 'SMART_BANNER',
       adId: admobid.banner,
-      isTesting: true,
+      isTesting: false,
       autoShow: true,
       position: this.admob.AD_POSITION.BOTTOM_CENTER,
     });

@@ -13,9 +13,9 @@ import { AdMobPro } from '@ionic-native/admob-pro';
   selector: 'page-chat',
   templateUrl: 'chat.html',
 })
-@Directive({
+/*@Directive({
   selector: "ion-textarea[autoresize]" // Attribute selector
-})
+})*/
 export class ChatPage {
   id: string = '';
   username: string = '';
@@ -31,10 +31,10 @@ export class ChatPage {
   public loader: any;
 
   @ViewChild(Content) content: Content
-  @HostListener("input", ["$event.target"])
+  /*@HostListener("input", ["$event.target"])
   onInput = (textArea: HTMLTextAreaElement): void => {
     this.adjust();
-  }
+  }*/
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -62,7 +62,7 @@ export class ChatPage {
       this.loader.dismiss();
     });
   }
-  ngOnInit(): void {
+  /*ngOnInit(): void {
     const waitThenAdjust = (trial: number): void => {
       if (trial > 10) {
         // Give up.
@@ -91,13 +91,14 @@ export class ChatPage {
       ta.style.height = "auto";
       ta.style.height = ta.scrollHeight + "px";
     }
-  }
+  }*/
   sendMessage() {
     if (this.message == '') {
 
     }
     else {
       this.db.list('/chat').push({
+        id: this.id,
         username: this.username,
         message: this.message,
         email: this.email,
@@ -106,7 +107,7 @@ export class ChatPage {
       }).then(() => {
       });
       this.message = '';
-      this.element.nativeElement.querySelector("textarea").style.height = "auto"
+      //this.element.nativeElement.querySelector("textarea").style.height = "auto"
     }
   }
   ionViewDidEnter() {
@@ -117,7 +118,7 @@ export class ChatPage {
 
     this.admobchat.prepareInterstitial({
       adId: admobid.interstitial,
-      isTesting: true,
+      isTesting: false,
       autoShow: true
     })
   }
@@ -183,6 +184,11 @@ export class ChatPage {
   doProfile(user) {
     this.app.getRootNav().push('ProfilePage', {
       userid: user.id
+    });
+  }
+  doProfileChat(message) {
+    this.app.getRootNav().push('ProfilePage', {
+      userid: message.id
     });
   }
 

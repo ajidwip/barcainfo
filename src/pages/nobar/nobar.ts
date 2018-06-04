@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { UUID } from 'angular2-uuid';
 import moment from 'moment';
 import { Storage } from '@ionic/storage';
+import { AdMobPro } from '@ionic-native/admob-pro';
 
 @IonicPage()
 @Component({
@@ -31,6 +32,7 @@ export class NobarPage {
     public alertCtrl: AlertController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
+    public admob: AdMobPro,
     public api: ApiProvider,
     public storage: Storage,
     public app: App,
@@ -59,6 +61,18 @@ export class NobarPage {
       });
     }
     this.doGetRegional();
+  }
+  ionViewDidEnter() {
+    var admobid = {
+      banner: 'ca-app-pub-7488223921090533/9446361096',
+      interstitial: 'ca-app-pub-7488223921090533/9226869245'
+    };
+
+    this.admob.prepareInterstitial({
+      adId: admobid.interstitial,
+      isTesting: false,
+      autoShow: true
+    })
   }
   ngAfterViewInit() {
     this.loader.dismiss();

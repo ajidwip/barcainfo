@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { LoadingController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { App, LoadingController, IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AdMobPro } from '@ionic-native/admob-pro';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 @IonicPage()
 @Component({
@@ -18,10 +19,13 @@ export class VideoPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public api: ApiProvider,
+    public app: App,
+    public platform: Platform,
+    public screenOrientation: ScreenOrientation,
     private iab: InAppBrowser,
     public loadingCtrl: LoadingController,
-    private admobvideo: AdMobPro) {    
-      this.loader = this.loadingCtrl.create({
+    private admobvideo: AdMobPro) {
+    this.loader = this.loadingCtrl.create({
       // cssClass: 'transparent',
       content: 'Loading Content...'
     });
@@ -70,9 +74,14 @@ export class VideoPage {
     })
   }
   doOpenVideo(video) {
-    const browser = this.iab.create(video.video_url, '_blank', 'location=no');
+    this.app.getRootNav().push('PlayerPage', {
+      url: video.video_url
+    })
   }
   ionViewDidEnter() {
+    if (this.platform.is('cordova')) {
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+    }
     var admobid = {
       banner: 'ca-app-pub-7488223921090533/9446361096',
       interstitial: 'ca-app-pub-7488223921090533/9226869245'
@@ -81,10 +90,15 @@ export class VideoPage {
     this.admobvideo.createBanner({
       adSize: 'SMART_BANNER',
       adId: admobid.banner,
-      isTesting: true,
+      isTesting: false,
       autoShow: true,
       position: this.admobvideo.AD_POSITION.BOTTOM_CENTER,
     });
+    this.admobvideo.prepareInterstitial({
+      adId: admobid.interstitial,
+      isTesting: false,
+      autoShow: false
+    })
   }
   ionViewWillLeave() {
     this.admobvideo.removeBanner();

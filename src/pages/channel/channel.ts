@@ -46,7 +46,7 @@ export class ChannelPage {
     this.admobnews.createBanner({
       adSize: 'SMART_BANNER',
       adId: admobid.banner,
-      isTesting: true,
+      isTesting: false,
       autoShow: true,
       overlap: true,
       position: this.admobnews.AD_POSITION.BOTTOM_CENTER,
